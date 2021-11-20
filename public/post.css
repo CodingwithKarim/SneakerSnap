@@ -1,0 +1,45 @@
+img{
+    height: 200px;
+    width: 350px;
+    margin-bottom:1%;
+}
+
+#bootstrap-overide .list-group-item{
+    border: none;
+}
+
+#bootstrap-overide .form-control{
+
+}
+
+#bootstrap-overide .btn-primary{
+    display: inline-block;
+    margin-bottom: -1%;
+}
+
+.container{
+    text-align: center;
+}
+
+.list-group{
+    margin-top: -2%
+}
+
+ #bootstrap.form-control{
+    margin-bottom: 0.5%;
+}
+
+body{
+    background-color: honeydew
+}
+
+#bootstrap-overide .list-group-item{
+    background-color: unset;
+}
+
+.mb-1{
+    font-family: 'Abril Fatface', cursive;
+}
+ .header{
+     font-family: 'Abril Fatface', cursive;
+ }

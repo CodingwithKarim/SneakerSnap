@@ -1,6 +1,15 @@
-module.exports = function(app, passport, db) {
+module.exports = function(app, passport, db, ObjectId, multer) {
 
 // normal routes ===============================================================
+var storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'public/images/uploads')
+  },
+  filename: (req, file, cb) => {
+    cb(null, file.fieldname + '-' + Date.now() + ".png")
+  }
+});
+var upload = multer({storage: storage}); 
 
     // show the home page (will also have our login links)
     app.get('/', function(req, res) {
@@ -9,14 +18,31 @@ module.exports = function(app, passport, db) {
 
     // PROFILE SECTION =========================
     app.get('/profile', isLoggedIn, function(req, res) {
-        db.collection('messages').find().toArray((err, result) => {
+      let userID = ObjectId(req.user._id)
+        db.collection('makePost').find({postedBy: userID }).toArray((err, result) => {
           if (err) return console.log(err)
           res.render('profile.ejs', {
             user : req.user,
+            price: result,
             messages: result
           })
         })
     });
+
+    //PROFILE PAGE
+    
+    
+
+    // FEED =====================
+    app.get('/feed', isLoggedIn, function(req, res) {
+      db.collection('makePost').find().toArray((err, result) => {
+        if (err) return console.log(err)
+        res.render('feed.ejs', {
+          user : req.user,
+          messages: result
+        })
+      })
+  });
 
     // LOGOUT ==============================
     app.get('/logout', function(req, res) {
@@ -24,10 +50,63 @@ module.exports = function(app, passport, db) {
         res.redirect('/');
     });
 
+// Post Page ===============================================================
+app.get('/post/:postComments', isLoggedIn, function (req, res) {
+  console.log('params', req.params);
+  let postId = ObjectId(req.params.postComments);
+  console.log('objectId', postId);
+  db.collection('makePost')
+    .find({
+      _id: postId,
+    })
+    .toArray((err, result) => {
+      if (err) return console.log(err);
+      db.collection('comments')
+        .find({
+          postId: postId,
+        })
+        .toArray((err, result02) => {
+          res.render('post.ejs', {
+            user: req.user,
+            posts: result,
+            comments: result02,
+          });
+        });
+    });
+});
+//profile page
+app.get('/page/:id', isLoggedIn, function (req, res) {
+  let params = req.params.id;
+  console.log(params);
+  let postId = ObjectId(params);
+  db.collection('makePost')
+    .find({ postedBy: postId })
+    .toArray((err, result) => {
+      if (err) return console.log(err);
+      res.render('page.ejs', {
+        posts: result,
+      });
+    });
+});
+
+app.post('/comment/:postComments', (req, res) => {
+
+  let postId = ObjectId(req.params.postComments);
+
+  db.collection('comments').save(
+    { comment: req.body.comment, postId: postId },
+    (err, result) => {
+      if (err) return console.log(err);
+      console.log('saved to database');
+      res.redirect(`/post/${postId}`);
+    }
+  );
+});
+
 // message board routes ===============================================================
 
-    app.post('/messages', (req, res) => {
-      db.collection('messages').save({name: req.body.name, msg: req.body.msg, thumbUp: 0, thumbDown:0}, (err, result) => {
+    app.post('/upload', upload.single('file-to-upload'), (req, res) => {
+      db.collection('makePost').save({caption: req.body.caption,price: req.body.price, img: 'images/uploads/' + req.file.filename, postedBy: req.user._id, likes: 0}, (err, result) => {
         if (err) return console.log(err)
         console.log('saved to database')
         res.redirect('/profile')
@@ -35,10 +114,13 @@ module.exports = function(app, passport, db) {
     })
 
     app.put('/messages', (req, res) => {
-      db.collection('messages')
-      .findOneAndUpdate({name: req.body.name, msg: req.body.msg}, {
+      let testID = ObjectId(req.body.postID)
+      console.log(testID)
+      db.collection('makePost')
+      .findOneAndUpdate({_id: testID}, {
         $set: {
-          thumbUp:req.body.thumbUp + 1
+          likes: req.body.likes + 1,
+          comment: req.body.comment
         }
       }, {
         sort: {_id: -1},
@@ -49,12 +131,12 @@ module.exports = function(app, passport, db) {
       })
     })
 
-    app.delete('/messages', (req, res) => {
-      db.collection('messages').findOneAndDelete({name: req.body.name, msg: req.body.msg}, (err, result) => {
-        if (err) return res.send(500, err)
-        res.send('Message deleted!')
-      })
-    })
+    // app.delete('/messages', (req, res) => {
+    //   db.collection('messages').findOneAndDelete({name: req.body.name, msg: req.body.msg}, (err, result) => {
+    //     if (err) return res.send(500, err)
+    //     res.send('Message deleted!')
+    //   })
+    // })
 
 // =============================================================================
 // AUTHENTICATE (FIRST LOGIN) ==================================================
@@ -69,7 +151,7 @@ module.exports = function(app, passport, db) {
 
         // process the login form
         app.post('/login', passport.authenticate('local-login', {
-            successRedirect : '/profile', // redirect to the secure profile section
+            successRedirect : '/feed', // redirect to the secure profile section
             failureRedirect : '/login', // redirect back to the signup page if there is an error
             failureFlash : true // allow flash messages
         }));
@@ -82,7 +164,7 @@ module.exports = function(app, passport, db) {
 
         // process the signup form
         app.post('/signup', passport.authenticate('local-signup', {
-            successRedirect : '/profile', // redirect to the secure profile section
+            successRedirect : '/feed', // redirect to the secure profile section
             failureRedirect : '/signup', // redirect back to the signup page if there is an error
             failureFlash : true // allow flash messages
         }));

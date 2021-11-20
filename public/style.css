@@ -1,7 +1,11 @@
 body{
   padding-top:80px;
   word-wrap:break-word;
+  background-color: rgb(227,92,197);
 }
 img{
-  height: 200px;
+  height: 500px;
+}
+.jumbotron{
+  background: radial-gradient(#ebff6a, transparent);
 }

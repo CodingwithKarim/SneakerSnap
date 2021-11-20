@@ -1,5 +1,5 @@
 {
-  "name": "node-authentication",
+  "name": "authentication",
   "main": "server.js",
   "dependencies": {
     "bcrypt": "*",
@@ -16,10 +16,29 @@
     "mongoose": "^5.12.1",
     "morgan": "^1.9.1",
     "mpath": ">=0.5.1",
+    "multer": "^1.4.3",
+    "nodemon": "^2.0.15",
     "passport": "~0.3.2",
     "passport-facebook": "~2.1.1",
     "passport-google-oauth": "~1.0.0",
     "passport-local": "~1.0.0",
     "passport-twitter": "^0.1.5"
-  }
+  },
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js"
+  },
+  "description": "1. Clone repo\r 2. run `npm install`",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leonnoel/savage-auth.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leonnoel/savage-auth/issues"
+  },
+  "homepage": "https://github.com/leonnoel/savage-auth#readme",
+  "devDependencies": {}
 }
