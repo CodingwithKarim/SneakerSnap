@@ -131,12 +131,13 @@ app.post('/comment/:postComments', (req, res) => {
       })
     })
 
-    // app.delete('/messages', (req, res) => {
-    //   db.collection('messages').findOneAndDelete({name: req.body.name, msg: req.body.msg}, (err, result) => {
-    //     if (err) return res.send(500, err)
-    //     res.send('Message deleted!')
-    //   })
-    // })
+    app.delete('/deletePost', (req, res) => {
+    let key = ObjectId(req.body.key)
+      db.collection('makePost').findOneAndDelete({_id: key }, (err, result) => {
+        if (err) return res.send(500, err)
+        res.send('Message deleted!')
+      })
+    })
 
 // =============================================================================
 // AUTHENTICATE (FIRST LOGIN) ==================================================
