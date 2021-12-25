@@ -8,9 +8,6 @@ img{
     border: none;
 }
 
-#bootstrap-overide .form-control{
-
-}
 
 #bootstrap-overide .btn-primary{
     display: inline-block;
@@ -22,7 +19,7 @@ img{
 }
 
 .list-group{
-    margin-top: -2%
+    margin-top: -1%
 }
 
  #bootstrap.form-control{
@@ -43,3 +40,9 @@ body{
  .header{
      font-family: 'Abril Fatface', cursive;
  }
+
+ #bootstrap-overide .comments{
+    background-color:lavenderblush;
+    font-family: 'Lato', sans-serif;
+}
+

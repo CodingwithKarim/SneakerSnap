@@ -10,6 +10,9 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&display=swap" rel="stylesheet">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Lato&display=swap');
+    </style>
   <link rel="stylesheet" href="../post.css">
 </head>
 <body id="bootstrap-overide">
@@ -40,7 +43,7 @@
         <h3 style="margin-bottom: 2%; font-family: 'Abril Fatface', cursive;">Comments</h3>
         <ul class="list-group">
          <%comments.forEach(comment => {%>
-            <li class="list-group-item"><%=comment.comment%></li>
+            <li class="list-group-item comments"><%=comment.comment%></li>
           <%})%>
         </section>
 

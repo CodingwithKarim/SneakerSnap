@@ -8,22 +8,24 @@
     <script src="https://kit.fontawesome.com/1b23973fb1.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="feed.css" />
   </head>
-  <body>
+  <body id="bootstrap-overide">
 
     <div class="page-header text-center">
-      <h1>THE FEED</h1>
-      <a href="/profile">Profile</a>
-      <a href="/logout">Logout</a>
+      <h1 class="links">FEED</h1>
+      <a class="links" href="/profile">Profile</a>
+      <a class="links" href="/logout">Logout</a>
     </div>
 
     <div class="container ">
       <ul class="allPosts">
         <% for(let i = 0; i < messages.length; i++) {%>
         <div class="card images">
-            <p class="price">$<%= messages[i].price %></p>    
+            <p class="price">$<%= messages[i].price %></p> 
+           
 
               <li>
-                <i class="info fas fa-info-circle"></i>
+                
+                  <i class="info fas fa-info-circle"></i>
                   <p class="text"><%= messages[i].caption %></p>
                   <div class="imgBx">
                     <a href="/post/<%= messages[i]._id %>">

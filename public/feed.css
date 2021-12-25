@@ -53,6 +53,7 @@ body {
 .container {
 	position: relative;
 	padding: 0 20px;
+	margin-left: 8%;
 }
 .container .card {
 	/* display: flex; */
@@ -129,6 +130,7 @@ body {
 	left: 9%;
 	/* transform: translate(-50%, -50%) rotate(-25deg); */
 	width: 270px;
+	height: 220px;
 }
 .container .card .contentBx {
 	position: absolute;
@@ -265,4 +267,9 @@ body {
 }
 .info:hover + .text {
 	display: block;
+}
+
+#bootstrap-overide .links {
+	font-size: 40px;
+	margin-top:5%;
 }

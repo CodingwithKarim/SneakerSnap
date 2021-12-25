@@ -130,5 +130,9 @@ button{
 	border-radius: 4px;
 	cursor: pointer;
 
+}
 
+.images{
+	margin: 0 auto;
+	height: 200px;
 }
